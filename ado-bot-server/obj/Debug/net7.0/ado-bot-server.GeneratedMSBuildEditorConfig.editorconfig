@@ -1,0 +1,17 @@
+is_global = true
+build_property.TargetFramework = net7.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = ado_bot_server
+build_property.RootNamespace = ado_bot_server
+build_property.ProjectDir = /Users/callisto/Desktop/BCIT/TERM_4/MVC/final-project/AdoBot/ado-bot-server/
+build_property.RazorLangVersion = 7.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = /Users/callisto/Desktop/BCIT/TERM_4/MVC/final-project/AdoBot/ado-bot-server
+build_property._RazorSourceGeneratorDebug = 
