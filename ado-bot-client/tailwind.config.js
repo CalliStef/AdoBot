@@ -13,7 +13,10 @@ export default {
         manrope: ['"Manrope"'],
       }
     },
+   
   },
-  plugins: [],
+  plugins: [
+    require("tailwindcss-animate"),
+  ],
 }
 

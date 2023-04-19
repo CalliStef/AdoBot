@@ -5,6 +5,7 @@ using ado_bot_server.Models;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
+
 DotNetEnv.Env.Load();
 
 
@@ -47,9 +48,10 @@ var app = builder.Build();
 
 app.MapControllers();
 app.MapHub<ChannelHub>("/r/chat");
-app.MapGet("/api/predict", (string comment) =>
+app.MapGet("/api/predict", (string comment ) =>
 {
-    ToxicModel.ModelInput input = new ToxicModel.ModelInput { Comment_text = comment };
+    
+    ToxicModel.ModelInput input = new ToxicModel.ModelInput(){ Text = comment };
 
     var sortedScoresWithLabel = ToxicModel.PredictAllLabels(input);
     var isToxic = sortedScoresWithLabel.First().Key == "1";

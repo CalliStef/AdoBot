@@ -43,6 +43,20 @@ public class UsersController : ControllerBase
         return User;
     }
 
+    [HttpGet]
+    [Route("username/{username}")]
+    public async Task<ActionResult<User>> GetUserByUsername(string username)
+    {
+        var User = await _context.Users.FirstOrDefaultAsync(u => u.Username == username);
+
+        if (User == null)
+        {
+            return NotFound();
+        }
+
+        return User;
+    }
+
     [HttpPost]
     public async Task<ActionResult<User>> PostUser(User User)
     {
@@ -52,13 +66,33 @@ public class UsersController : ControllerBase
 
         if (existingUser != null)
         {
-            return BadRequest("Username already exists");
+            return Conflict("Username already exists");
         }
-        
+
         _context.Users.Add(User);
         await _context.SaveChangesAsync();
 
         return CreatedAtAction(nameof(GetUser), new { id = User.Id }, User);
+    }
+
+    [HttpPost]
+    [Route("login")]
+    public async Task<ActionResult<User>> LoginUser(User User)
+    {
+        // check if username already exists
+        var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Username == User.Username);
+
+        if (existingUser == null)
+        {
+            return NotFound("User not found");
+        }
+
+        if (existingUser.Password != User.Password)
+        {
+            return Unauthorized("Incorrect password");
+        }
+
+        return existingUser;
     }
 
 // // POST: api/Users/5/Users

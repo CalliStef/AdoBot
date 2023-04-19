@@ -50,14 +50,22 @@ namespace ado_bot_server.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasDefaultValueSql("now()");
 
+                    b.Property<int>("CreatorId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<int>("Totalposts")
+                        .HasColumnType("integer");
 
                     b.Property<int>("Totalusers")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CreatorId");
 
                     b.ToTable("Channels");
                 });
@@ -150,6 +158,17 @@ namespace ado_bot_server.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("ado_bot_server.Models.Channel", b =>
+                {
+                    b.HasOne("ado_bot_server.Models.User", "Creator")
+                        .WithMany("ChannelsCreated")
+                        .HasForeignKey("CreatorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Creator");
+                });
+
             modelBuilder.Entity("ado_bot_server.Models.Post", b =>
                 {
                     b.HasOne("ado_bot_server.Models.Channel", "Channel")
@@ -172,6 +191,11 @@ namespace ado_bot_server.Migrations
             modelBuilder.Entity("ado_bot_server.Models.Channel", b =>
                 {
                     b.Navigation("Posts");
+                });
+
+            modelBuilder.Entity("ado_bot_server.Models.User", b =>
+                {
+                    b.Navigation("ChannelsCreated");
                 });
 #pragma warning restore 612, 618
         }

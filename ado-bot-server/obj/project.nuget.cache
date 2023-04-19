@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "hUL+SL/c/RTHqL9ECkLfY5gzE1dm3NT6AyzeksjXzAdCOBe3oWMDCe0J3JDKMw0ryvjUw/KD2kyQYqMyxGwPYA==",
+  "dgSpecHash": "9tXKhYugE6RhOpgMETMTzwG5wyXgmIE37n4KkYOvrInwJx9YVcAXmbJSKUXSXz4r9ZP6ziVm3kBt+BvdXVrdag==",
   "success": true,
   "projectFilePath": "/Users/callisto/Desktop/BCIT/TERM_4/MVC/final-project/AdoBot/ado-bot-server/ado-bot-server.csproj",
   "expectedPackageFiles": [
@@ -52,6 +52,7 @@
     "/Users/callisto/.nuget/packages/microsoft.ml/2.0.1/microsoft.ml.2.0.1.nupkg.sha512",
     "/Users/callisto/.nuget/packages/microsoft.ml.cpumath/2.0.1/microsoft.ml.cpumath.2.0.1.nupkg.sha512",
     "/Users/callisto/.nuget/packages/microsoft.ml.dataview/2.0.1/microsoft.ml.dataview.2.0.1.nupkg.sha512",
+    "/Users/callisto/.nuget/packages/microsoft.ml.fasttree/2.0.1/microsoft.ml.fasttree.2.0.1.nupkg.sha512",
     "/Users/callisto/.nuget/packages/microsoft.net.http.headers/2.2.0/microsoft.net.http.headers.2.2.0.nupkg.sha512",
     "/Users/callisto/.nuget/packages/microsoft.netcore.platforms/2.0.0/microsoft.netcore.platforms.2.0.0.nupkg.sha512",
     "/Users/callisto/.nuget/packages/microsoft.netcore.targets/1.1.3/microsoft.netcore.targets.1.1.3.nupkg.sha512",

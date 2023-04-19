@@ -49,9 +49,27 @@ public class ChannelsController : ControllerBase
         return Channel;
     }
 
+    // get channels by creator id
+    [HttpGet("creator/{id}")]
+    public async Task<ActionResult<IEnumerable<Channel>>> GetChannelsByCreator(int id)
+    {
+        // var Channel = await _context.Channels.FindAsync(id);
+        var Channels = await _context.Channels.Where(c => c.CreatorId == id).ToListAsync();
+        
+        // _context.Entry(Channel).Collection("Posts").Load();
+
+        if (Channels == null)
+        {
+            return NotFound();
+        }
+        
+        return Channels;
+    }
+
     [HttpPost]
     public async Task<ActionResult<Channel>> PostChannel(Channel Channel)
     {
+
         _context.Channels.Add(Channel);
         await _context.SaveChangesAsync();
 
@@ -60,7 +78,7 @@ public class ChannelsController : ControllerBase
         return CreatedAtAction(nameof(GetChannel), new { id = Channel.Id }, Channel);
     }
 
-// POST: api/Channels/5/Posts
+    // POST: api/Channels/5/Posts
     [HttpPost("{channelId}/Posts")]
     public async Task<Post> PostChannelPost(int channelId, Post message)
     {
