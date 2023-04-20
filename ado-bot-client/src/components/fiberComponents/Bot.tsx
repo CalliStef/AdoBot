@@ -1,35 +1,45 @@
-import { useRef, MutableRefObject, useEffect, useLayoutEffect } from "react";
+import { useRef, MutableRefObject, forwardRef, useImperativeHandle, RefObject } from "react";
 import { useFrame, useThree, extend } from "@react-three/fiber";
-import { Sphere, Group } from "three";
+import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
 extend({ OrbitControls });
 
-export default function Bot() {
-  const { camera, gl, size, viewport } = useThree();
-  const botRef: MutableRefObject<Group | null> = useRef<Group>(null);
+interface BotProps {  
+  positionX?: number;
+  positionY?: number;
+  positionZ?: number;
+  rotationX?: number;
+  rotationY?: number;
+  rotationZ?: number;
+
+}
+
+const Bot = forwardRef<THREE.Group | null, BotProps>((props, ref)  => {
+  const { camera, gl, size, viewport, mouse } = useThree();
+  const botRef = ref as RefObject<THREE.Group | null>;
 
   useFrame(() => {
     const { width, height } = viewport;
     const aspect = width / height;
 
-    if (botRef.current) {
+    if (botRef?.current) {
       // Update the scale, position, and rotation of the meshes based on aspect ratio
+
+      const {positionX, positionY, positionZ} = props;
+
       const botGroup = botRef.current;
-
+      
       botGroup.scale.set(0.8 * aspect, 0.8 * aspect, 1);
-      botGroup.rotation.y = 0.5;
-      botGroup.position.x = -1.5 * aspect;
-     
 
-      // Update other meshes in the group similarly
+      botGroup.position.x = (positionX ?? 0) * aspect;
+      botGroup.position.y = positionY ?? 0;
+      botGroup.position.z = (positionZ ?? 0) * aspect;
 
-      // Reset scale, position, and rotation of the meshes when aspect ratio changes
-      return () => {
-        botGroup!.scale.set(1.2, 0.8, 1);
-        botGroup!.rotation.y = 0.5;
-        // Reset other meshes in the group similarly
-      };
+      botGroup.rotation.y = (props.rotationY ?? 0) * aspect;
+      botGroup.rotation.x = props.rotationX ?? 0;
+      botGroup.rotation.z = (props.rotationZ ?? 0) * aspect;
+      
     }
   });
 
@@ -37,9 +47,9 @@ export default function Bot() {
     if (botRef.current) {
       // botRef.current.rotation.y += 0.01;
       const botGroup = botRef.current;
-      botGroup.position.y = Math.sin(state.clock.elapsedTime * 2) * 0.3;
-      // const botGroupPosition = Math.sin(state.clock.elapsedTime * 1.5) * 0.2;
-      // botGroup.position.x = botGroupPosition;
+      if(!props.positionY){
+        botGroup.position.y = Math.sin(state.clock.elapsedTime * 2) * 0.3;
+      }
 
       // animate eyes blink
       const leftEye = botGroup.children.find(
@@ -67,12 +77,23 @@ export default function Bot() {
     }
   });
 
+  const animateBotToY = (targetY: number) => {
+    const velocity = new THREE.Vector3(0, -0.01, 0); // Define the velocity of the bot
+
+    useFrame(() => {
+      if (botRef.current && botRef.current.position.y > targetY) {
+        // Move the bot until it reaches the target y position
+        botRef.current.position.add(velocity);
+      }
+    });
+  };
+
   return (
     <>
       {/* <OrbitControls args={[camera, gl.domElement]}/> */}
       {/* <directionalLight position={[1, 2, 5]} intensity={2} color="#cad2c5"/> */}
 
-      <group ref={botRef} rotation-y={0.3}>
+      <group ref={ref}>
         <mesh name="botGroup" scale={[1.2, 0.8, 1]}>
           <sphereGeometry />
           <meshBasicMaterial color="#cad2c5" />
@@ -149,4 +170,6 @@ export default function Bot() {
       </group>
     </>
   );
-}
+})
+
+export default Bot;

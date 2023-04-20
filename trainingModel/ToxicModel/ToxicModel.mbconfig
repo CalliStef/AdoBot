@@ -1,0 +1,581 @@
+{
+  "Scenario": "Classification",
+  "DataSource": {
+    "Type": "TabularFile",
+    "Version": 1,
+    "FilePath": "/Users/callisto/Desktop/BCIT/TERM_4/MVC/final-project/AdoBot/trainingModel/SocialMediaToxicityDataset.csv",
+    "Delimiter": ",",
+    "DecimalMarker": ".",
+    "HasHeader": true,
+    "ColumnProperties": [
+      {
+        "ColumnName": "worker_id",
+        "ColumnPurpose": "Feature",
+        "ColumnDataFormat": "String",
+        "IsCategorical": false,
+        "Type": "Column",
+        "Version": 4
+      },
+      {
+        "ColumnName": "task_id",
+        "ColumnPurpose": "Feature",
+        "ColumnDataFormat": "String",
+        "IsCategorical": false,
+        "Type": "Column",
+        "Version": 4
+      },
+      {
+        "ColumnName": "task_response_id",
+        "ColumnPurpose": "Feature",
+        "ColumnDataFormat": "String",
+        "IsCategorical": false,
+        "Type": "Column",
+        "Version": 4
+      },
+      {
+        "ColumnName": "text",
+        "ColumnPurpose": "Feature",
+        "ColumnDataFormat": "String",
+        "IsCategorical": false,
+        "Type": "Column",
+        "Version": 4
+      },
+      {
+        "ColumnName": "IsToxic",
+        "ColumnPurpose": "Label",
+        "ColumnDataFormat": "String",
+        "IsCategorical": false,
+        "Type": "Column",
+        "Version": 4
+      }
+    ]
+  },
+  "Environment": {
+    "Type": "LocalCPU",
+    "Version": 1
+  },
+  "RunHistory": {
+    "Version": 3,
+    "Type": "Result",
+    "Trials": [
+      {
+        "Version": 1,
+        "Type": "Trial",
+        "TrainerName": "FastTreeOva",
+        "Score": 0.8855708245243129,
+        "RuntimeInSeconds": 17.456,
+        "Parameter": {
+          "_SCHEMA_": "e0 * e1 * e2 * e3 * e4 * e5 * e6 * e13",
+          "e0": {
+            "InputColumnName": "worker_id",
+            "OutputColumnName": "worker_id"
+          },
+          "e1": {
+            "InputColumnName": "task_id",
+            "OutputColumnName": "task_id"
+          },
+          "e13": {
+            "OutputColumnName": "PredictedLabel",
+            "InputColumnName": "PredictedLabel"
+          },
+          "e2": {
+            "InputColumnName": "task_response_id",
+            "OutputColumnName": "task_response_id"
+          },
+          "e3": {
+            "InputColumnName": "text",
+            "OutputColumnName": "text"
+          },
+          "e4": {
+            "InputColumnNames": [
+              "worker_id",
+              "task_id",
+              "task_response_id",
+              "text"
+            ],
+            "OutputColumnName": "Features"
+          },
+          "e5": {
+            "OutputColumnName": "IsToxic",
+            "InputColumnName": "IsToxic",
+            "AddKeyValueAnnotationsAsText": false
+          },
+          "e6": {
+            "NumberOfLeaves": 4,
+            "MinimumExampleCountPerLeaf": 9,
+            "NumberOfTrees": 1843,
+            "MaximumBinCountPerFeature": 1023,
+            "FeatureFraction": 0.7598923117863101,
+            "LearningRate": 0.9999997766729865,
+            "LabelColumnName": "IsToxic",
+            "FeatureColumnName": "Features"
+          },
+          "e10": {
+            "L1Regularization": 1.0,
+            "L2Regularization": 1.0,
+            "LabelColumnName": "IsToxic",
+            "FeatureColumnName": "Features"
+          },
+          "e11": {
+            "L1Regularization": 1.0,
+            "L2Regularization": 0.1,
+            "LabelColumnName": "IsToxic",
+            "FeatureColumnName": "Features"
+          },
+          "e12": {
+            "L1Regularization": 1.0,
+            "L2Regularization": 0.1,
+            "LabelColumnName": "IsToxic",
+            "FeatureColumnName": "Features"
+          },
+          "e7": {
+            "NumberOfTrees": 4,
+            "NumberOfLeaves": 4,
+            "FeatureFraction": 1.0,
+            "LabelColumnName": "IsToxic",
+            "FeatureColumnName": "Features"
+          },
+          "e8": {
+            "NumberOfLeaves": 4,
+            "MinimumExampleCountPerLeaf": 20,
+            "LearningRate": 1.0,
+            "NumberOfTrees": 4,
+            "SubsampleFraction": 1.0,
+            "MaximumBinCountPerFeature": 255,
+            "FeatureFraction": 1.0,
+            "L1Regularization": 2E-10,
+            "L2Regularization": 1.0,
+            "LabelColumnName": "IsToxic",
+            "FeatureColumnName": "Features"
+          },
+          "e9": {
+            "L1Regularization": 1.0,
+            "L2Regularization": 1.0,
+            "LabelColumnName": "IsToxic",
+            "FeatureColumnName": "Features"
+          }
+        }
+      },
+      {
+        "Version": 1,
+        "Type": "Trial",
+        "TrainerName": "LbfgsLogisticRegressionOva",
+        "Score": 0.8850422832980973,
+        "RuntimeInSeconds": 1.631,
+        "Parameter": {
+          "_SCHEMA_": "e0 * e1 * e2 * e3 * e4 * e5 * e9 * e13",
+          "e0": {
+            "InputColumnName": "worker_id",
+            "OutputColumnName": "worker_id"
+          },
+          "e1": {
+            "InputColumnName": "task_id",
+            "OutputColumnName": "task_id"
+          },
+          "e13": {
+            "OutputColumnName": "PredictedLabel",
+            "InputColumnName": "PredictedLabel"
+          },
+          "e2": {
+            "InputColumnName": "task_response_id",
+            "OutputColumnName": "task_response_id"
+          },
+          "e3": {
+            "InputColumnName": "text",
+            "OutputColumnName": "text"
+          },
+          "e4": {
+            "InputColumnNames": [
+              "worker_id",
+              "task_id",
+              "task_response_id",
+              "text"
+            ],
+            "OutputColumnName": "Features"
+          },
+          "e5": {
+            "OutputColumnName": "IsToxic",
+            "InputColumnName": "IsToxic",
+            "AddKeyValueAnnotationsAsText": false
+          },
+          "e9": {
+            "L1Regularization": 0.25341034,
+            "L2Regularization": 0.03125,
+            "LabelColumnName": "IsToxic",
+            "FeatureColumnName": "Features"
+          },
+          "e10": {
+            "L1Regularization": 1.0,
+            "L2Regularization": 1.0,
+            "LabelColumnName": "IsToxic",
+            "FeatureColumnName": "Features"
+          },
+          "e11": {
+            "L1Regularization": 1.0,
+            "L2Regularization": 0.1,
+            "LabelColumnName": "IsToxic",
+            "FeatureColumnName": "Features"
+          },
+          "e12": {
+            "L1Regularization": 1.0,
+            "L2Regularization": 0.1,
+            "LabelColumnName": "IsToxic",
+            "FeatureColumnName": "Features"
+          },
+          "e6": {
+            "NumberOfLeaves": 4,
+            "MinimumExampleCountPerLeaf": 20,
+            "NumberOfTrees": 4,
+            "MaximumBinCountPerFeature": 255,
+            "FeatureFraction": 1.0,
+            "LearningRate": 0.09999999999999998,
+            "LabelColumnName": "IsToxic",
+            "FeatureColumnName": "Features"
+          },
+          "e7": {
+            "NumberOfTrees": 4,
+            "NumberOfLeaves": 4,
+            "FeatureFraction": 1.0,
+            "LabelColumnName": "IsToxic",
+            "FeatureColumnName": "Features"
+          },
+          "e8": {
+            "NumberOfLeaves": 4,
+            "MinimumExampleCountPerLeaf": 20,
+            "LearningRate": 1.0,
+            "NumberOfTrees": 4,
+            "SubsampleFraction": 1.0,
+            "MaximumBinCountPerFeature": 255,
+            "FeatureFraction": 1.0,
+            "L1Regularization": 2E-10,
+            "L2Regularization": 1.0,
+            "LabelColumnName": "IsToxic",
+            "FeatureColumnName": "Features"
+          }
+        }
+      },
+      {
+        "Version": 1,
+        "Type": "Trial",
+        "TrainerName": "LbfgsLogisticRegressionOva",
+        "Score": 0.8504228329809725,
+        "RuntimeInSeconds": 1.683,
+        "Parameter": {
+          "_SCHEMA_": "e0 * e1 * e2 * e3 * e4 * e5 * e9 * e13",
+          "e0": {
+            "InputColumnName": "worker_id",
+            "OutputColumnName": "worker_id"
+          },
+          "e1": {
+            "InputColumnName": "task_id",
+            "OutputColumnName": "task_id"
+          },
+          "e13": {
+            "OutputColumnName": "PredictedLabel",
+            "InputColumnName": "PredictedLabel"
+          },
+          "e2": {
+            "InputColumnName": "task_response_id",
+            "OutputColumnName": "task_response_id"
+          },
+          "e3": {
+            "InputColumnName": "text",
+            "OutputColumnName": "text"
+          },
+          "e4": {
+            "InputColumnNames": [
+              "worker_id",
+              "task_id",
+              "task_response_id",
+              "text"
+            ],
+            "OutputColumnName": "Features"
+          },
+          "e5": {
+            "OutputColumnName": "IsToxic",
+            "InputColumnName": "IsToxic",
+            "AddKeyValueAnnotationsAsText": false
+          },
+          "e9": {
+            "L1Regularization": 0.17160024,
+            "L2Regularization": 0.03125,
+            "LabelColumnName": "IsToxic",
+            "FeatureColumnName": "Features"
+          },
+          "e10": {
+            "L1Regularization": 1.0,
+            "L2Regularization": 1.0,
+            "LabelColumnName": "IsToxic",
+            "FeatureColumnName": "Features"
+          },
+          "e11": {
+            "L1Regularization": 1.0,
+            "L2Regularization": 0.1,
+            "LabelColumnName": "IsToxic",
+            "FeatureColumnName": "Features"
+          },
+          "e12": {
+            "L1Regularization": 1.0,
+            "L2Regularization": 0.1,
+            "LabelColumnName": "IsToxic",
+            "FeatureColumnName": "Features"
+          },
+          "e6": {
+            "NumberOfLeaves": 4,
+            "MinimumExampleCountPerLeaf": 20,
+            "NumberOfTrees": 4,
+            "MaximumBinCountPerFeature": 255,
+            "FeatureFraction": 1.0,
+            "LearningRate": 0.09999999999999998,
+            "LabelColumnName": "IsToxic",
+            "FeatureColumnName": "Features"
+          },
+          "e7": {
+            "NumberOfTrees": 4,
+            "NumberOfLeaves": 4,
+            "FeatureFraction": 1.0,
+            "LabelColumnName": "IsToxic",
+            "FeatureColumnName": "Features"
+          },
+          "e8": {
+            "NumberOfLeaves": 4,
+            "MinimumExampleCountPerLeaf": 20,
+            "LearningRate": 1.0,
+            "NumberOfTrees": 4,
+            "SubsampleFraction": 1.0,
+            "MaximumBinCountPerFeature": 255,
+            "FeatureFraction": 1.0,
+            "L1Regularization": 2E-10,
+            "L2Regularization": 1.0,
+            "LabelColumnName": "IsToxic",
+            "FeatureColumnName": "Features"
+          }
+        }
+      },
+      {
+        "Version": 1,
+        "Type": "Trial",
+        "TrainerName": "FastForestOva",
+        "Score": 0.8398520084566596,
+        "RuntimeInSeconds": 4.96,
+        "Parameter": {
+          "_SCHEMA_": "e0 * e1 * e2 * e3 * e4 * e5 * e7 * e13",
+          "e0": {
+            "InputColumnName": "worker_id",
+            "OutputColumnName": "worker_id"
+          },
+          "e1": {
+            "InputColumnName": "task_id",
+            "OutputColumnName": "task_id"
+          },
+          "e13": {
+            "OutputColumnName": "PredictedLabel",
+            "InputColumnName": "PredictedLabel"
+          },
+          "e2": {
+            "InputColumnName": "task_response_id",
+            "OutputColumnName": "task_response_id"
+          },
+          "e3": {
+            "InputColumnName": "text",
+            "OutputColumnName": "text"
+          },
+          "e4": {
+            "InputColumnNames": [
+              "worker_id",
+              "task_id",
+              "task_response_id",
+              "text"
+            ],
+            "OutputColumnName": "Features"
+          },
+          "e5": {
+            "OutputColumnName": "IsToxic",
+            "InputColumnName": "IsToxic",
+            "AddKeyValueAnnotationsAsText": false
+          },
+          "e7": {
+            "NumberOfTrees": 107,
+            "NumberOfLeaves": 192,
+            "FeatureFraction": 0.5439507,
+            "LabelColumnName": "IsToxic",
+            "FeatureColumnName": "Features"
+          },
+          "e10": {
+            "L1Regularization": 1.0,
+            "L2Regularization": 1.0,
+            "LabelColumnName": "IsToxic",
+            "FeatureColumnName": "Features"
+          },
+          "e11": {
+            "L1Regularization": 1.0,
+            "L2Regularization": 0.1,
+            "LabelColumnName": "IsToxic",
+            "FeatureColumnName": "Features"
+          },
+          "e12": {
+            "L1Regularization": 1.0,
+            "L2Regularization": 0.1,
+            "LabelColumnName": "IsToxic",
+            "FeatureColumnName": "Features"
+          },
+          "e6": {
+            "NumberOfLeaves": 4,
+            "MinimumExampleCountPerLeaf": 20,
+            "NumberOfTrees": 4,
+            "MaximumBinCountPerFeature": 255,
+            "FeatureFraction": 1.0,
+            "LearningRate": 0.09999999999999998,
+            "LabelColumnName": "IsToxic",
+            "FeatureColumnName": "Features"
+          },
+          "e8": {
+            "NumberOfLeaves": 4,
+            "MinimumExampleCountPerLeaf": 20,
+            "LearningRate": 1.0,
+            "NumberOfTrees": 4,
+            "SubsampleFraction": 1.0,
+            "MaximumBinCountPerFeature": 255,
+            "FeatureFraction": 1.0,
+            "L1Regularization": 2E-10,
+            "L2Regularization": 1.0,
+            "LabelColumnName": "IsToxic",
+            "FeatureColumnName": "Features"
+          },
+          "e9": {
+            "L1Regularization": 1.0,
+            "L2Regularization": 1.0,
+            "LabelColumnName": "IsToxic",
+            "FeatureColumnName": "Features"
+          }
+        }
+      },
+      {
+        "Version": 1,
+        "Type": "Trial",
+        "TrainerName": "FastForestOva",
+        "Score": 0.8393234672304439,
+        "RuntimeInSeconds": 2.047,
+        "Parameter": {
+          "_SCHEMA_": "e0 * e1 * e2 * e3 * e4 * e5 * e7 * e13",
+          "e0": {
+            "InputColumnName": "worker_id",
+            "OutputColumnName": "worker_id"
+          },
+          "e1": {
+            "InputColumnName": "task_id",
+            "OutputColumnName": "task_id"
+          },
+          "e13": {
+            "OutputColumnName": "PredictedLabel",
+            "InputColumnName": "PredictedLabel"
+          },
+          "e2": {
+            "InputColumnName": "task_response_id",
+            "OutputColumnName": "task_response_id"
+          },
+          "e3": {
+            "InputColumnName": "text",
+            "OutputColumnName": "text"
+          },
+          "e4": {
+            "InputColumnNames": [
+              "worker_id",
+              "task_id",
+              "task_response_id",
+              "text"
+            ],
+            "OutputColumnName": "Features"
+          },
+          "e5": {
+            "OutputColumnName": "IsToxic",
+            "InputColumnName": "IsToxic",
+            "AddKeyValueAnnotationsAsText": false
+          },
+          "e7": {
+            "NumberOfTrees": 26,
+            "NumberOfLeaves": 20,
+            "FeatureFraction": 0.88245237,
+            "LabelColumnName": "IsToxic",
+            "FeatureColumnName": "Features"
+          },
+          "e10": {
+            "L1Regularization": 1.0,
+            "L2Regularization": 1.0,
+            "LabelColumnName": "IsToxic",
+            "FeatureColumnName": "Features"
+          },
+          "e11": {
+            "L1Regularization": 1.0,
+            "L2Regularization": 0.1,
+            "LabelColumnName": "IsToxic",
+            "FeatureColumnName": "Features"
+          },
+          "e12": {
+            "L1Regularization": 1.0,
+            "L2Regularization": 0.1,
+            "LabelColumnName": "IsToxic",
+            "FeatureColumnName": "Features"
+          },
+          "e6": {
+            "NumberOfLeaves": 4,
+            "MinimumExampleCountPerLeaf": 20,
+            "NumberOfTrees": 4,
+            "MaximumBinCountPerFeature": 255,
+            "FeatureFraction": 1.0,
+            "LearningRate": 0.09999999999999998,
+            "LabelColumnName": "IsToxic",
+            "FeatureColumnName": "Features"
+          },
+          "e8": {
+            "NumberOfLeaves": 4,
+            "MinimumExampleCountPerLeaf": 20,
+            "LearningRate": 1.0,
+            "NumberOfTrees": 4,
+            "SubsampleFraction": 1.0,
+            "MaximumBinCountPerFeature": 255,
+            "FeatureFraction": 1.0,
+            "L1Regularization": 2E-10,
+            "L2Regularization": 1.0,
+            "LabelColumnName": "IsToxic",
+            "FeatureColumnName": "Features"
+          },
+          "e9": {
+            "L1Regularization": 1.0,
+            "L2Regularization": 1.0,
+            "LabelColumnName": "IsToxic",
+            "FeatureColumnName": "Features"
+          }
+        }
+      }
+    ],
+    "Estimators": {
+      "e0": "FeaturizeText",
+      "e1": "FeaturizeText",
+      "e2": "FeaturizeText",
+      "e3": "FeaturizeText",
+      "e4": "Concatenate",
+      "e5": "MapValueToKey",
+      "e6": "FastTreeOva",
+      "e7": "FastForestOva",
+      "e8": "LightGbmMulti",
+      "e9": "LbfgsLogisticRegressionOva",
+      "e10": "LbfgsMaximumEntropyMulti",
+      "e11": "SdcaMaximumEntropyMulti",
+      "e12": "SdcaLogisticRegressionOva",
+      "e13": "MapKeyToValue"
+    },
+    "Schema": "e0 * e1 * e2 * e3 * e4 * e5 * (e6 + e7 + e8 + e9 + e10 + e11 + e12) * e13",
+    "MetricName": "MacroAccuracy",
+    "ModelFilePath": "/Users/callisto/Desktop/BCIT/TERM_4/MVC/final-project/AdoBot/trainingModel/ToxicModel/ToxicModel.mlnet"
+  },
+  "Type": "TrainingConfig",
+  "Version": 4,
+  "TrainingOption": {
+    "Version": 0,
+    "Type": "ClassificationTrainingOption",
+    "TrainingTime": 300,
+    "LabelColumn": "IsToxic",
+    "Seed": 0
+  }
+}

@@ -15,6 +15,15 @@ public class DatabaseContext : DbContext
         modelBuilder.Entity<User>().Property(e => e.Created).HasDefaultValueSql("now()");
         modelBuilder.Entity<User>().Property(e => e.Updated).HasDefaultValueSql("now()");
 
+        modelBuilder.Entity<Channel>()
+            .HasOne(e => e.Creator)
+            .WithMany(e => e.ChannelsCreated)
+            .HasForeignKey(e => e.CreatorId);
+
+        modelBuilder.Entity<Channel>()
+            .HasMany(e => e.Users)
+            .WithMany(e => e.Channels);
+
     }
 
     public DbSet<Channel> Channels => Set<Channel>();

@@ -1,3 +1,4 @@
+using ado_bot_server.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.SignalR;
@@ -43,6 +44,22 @@ public class UsersController : ControllerBase
         return User;
     }
 
+    [HttpGet]
+    [Route("username/{username}")]
+    public async Task<ActionResult<User>> GetUserByUsername(string username)
+    {
+        // get the user by username along with the channels they are in and the channels they created
+        var User = await _context.Users.Where(u => u.Username == username).Include(u => u.Channels).Include(u => u.Channels).FirstOrDefaultAsync();
+        // var User = await _context.Users.FirstOrDefaultAsync(u => u.Username == username);
+
+        if (User == null)
+        {
+            return NotFound();
+        }
+
+        return User;
+    }
+
     [HttpPost]
     public async Task<ActionResult<User>> PostUser(User User)
     {
@@ -52,13 +69,86 @@ public class UsersController : ControllerBase
 
         if (existingUser != null)
         {
-            return BadRequest("Username already exists");
+            return Conflict("Username already exists");
         }
-        
+
         _context.Users.Add(User);
         await _context.SaveChangesAsync();
 
         return CreatedAtAction(nameof(GetUser), new { id = User.Id }, User);
+    }
+
+    [HttpPost]
+    [Route("login")]
+    public async Task<ActionResult<User>> LoginUser(User user)
+    {
+        // check if username already exists
+        var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Username == user.Username);
+
+        if (existingUser == null)
+        {
+            return NotFound("User not found");
+        }
+
+        if (existingUser.Password != user.Password)
+        {
+            return Unauthorized("Incorrect password");
+        }
+
+        return existingUser;
+    }
+
+    // POST api/users/join
+    [HttpPost]
+    [Route("join")]
+    public async Task<ActionResult<User>> JoinChannel(JoinChannelRequestDTO requestDto)
+    {
+        
+        
+        var user = await _context.Users.FindAsync(requestDto.UserId);
+        var channel = await _context.Channels.FindAsync(requestDto.ChannelId);
+
+        if (user == null || channel == null)
+        {
+            return NotFound("User or channel not found");
+        }
+
+        // Add user to channel
+        user.Channels.Add(channel);
+
+        // Add channel to user
+        channel.Users.Add(user);
+        
+        await _context.SaveChangesAsync();
+
+        // Broadcast this to only the SignalR clients in the channel
+        await _hub.Clients.Group(requestDto.ChannelId.ToString()).SendAsync("UserJoined", user);
+
+        return user;
+    }
+
+    // POST api/users/leave
+    [HttpPost]
+    [Route("leave")]
+    public async Task<ActionResult<User>> LeaveChannel(JoinChannelRequestDTO requestDto)
+    {
+        var user = await _context.Users.FindAsync(requestDto.UserId);
+        var channel = await _context.Channels.FindAsync(requestDto.ChannelId);
+
+        if (user == null || channel == null)
+        {
+            return NotFound();
+        }
+
+        user.Channels.Remove(channel);
+        channel.Users.Remove(user);
+
+        await _context.SaveChangesAsync();
+
+        // Broadcast this to only the SignalR clients in the channel
+        await _hub.Clients.Group(requestDto.ChannelId.ToString()).SendAsync("UserLeft", user);
+
+        return user;
     }
 
 // // POST: api/Users/5/Users

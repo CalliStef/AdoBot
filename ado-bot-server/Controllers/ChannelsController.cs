@@ -27,7 +27,12 @@ public class ChannelsController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Channel>>> GetChannels()
     {
-        return await _context.Channels.ToListAsync();
+        
+        // get all channels with their users
+        var Channels = await _context.Channels.Include(c => c.Users).ToListAsync();
+
+        return Channels;
+        // return await _context.Channels.ToListAsync();
     }
 
 
@@ -49,9 +54,27 @@ public class ChannelsController : ControllerBase
         return Channel;
     }
 
+    // get channels by creator id
+    [HttpGet("creator/{id}")]
+    public async Task<ActionResult<IEnumerable<Channel>>> GetChannelsByCreator(int id)
+    {
+        // var Channel = await _context.Channels.FindAsync(id);
+        var Channels = await _context.Channels.Where(c => c.CreatorId == id).ToListAsync();
+        
+        // _context.Entry(Channel).Collection("Posts").Load();
+
+        if (Channels == null)
+        {
+            return NotFound();
+        }
+        
+        return Channels;
+    }
+
     [HttpPost]
     public async Task<ActionResult<Channel>> PostChannel(Channel Channel)
     {
+
         _context.Channels.Add(Channel);
         await _context.SaveChangesAsync();
 
@@ -60,18 +83,18 @@ public class ChannelsController : ControllerBase
         return CreatedAtAction(nameof(GetChannel), new { id = Channel.Id }, Channel);
     }
 
-// POST: api/Channels/5/Posts
+    // POST: api/Channels/5/Posts
     [HttpPost("{channelId}/Posts")]
-    public async Task<Post> PostChannelPost(int channelId, Post message)
+    public async Task<Post> PostChannelPost(int channelId, Post post)
     {
-        message.ChannelId = channelId;
-        _context.Posts.Add(message);
+        post.ChannelId = channelId;
+        _context.Posts.Add(post);
  
         await _context.SaveChangesAsync();
 
-        var channel = await _context.Channels.FindAsync(message.ChannelId);
+        var channel = await _context.Channels.FindAsync(post.ChannelId);
 
-        var newPost = await  _context.Posts.Where(m => m.Id == message.Id).Include(m => m.User).FirstOrDefaultAsync();
+        var newPost = await  _context.Posts.Where(m => m.Id == post.Id).Include(m => m.User).FirstOrDefaultAsync();
 
         // return CreatedAtAction("GetPost", "Post", new { id = Channel.Id }, Channel);
         // Broadcast this to all SignalR clients
@@ -79,7 +102,7 @@ public class ChannelsController : ControllerBase
         await _hub.Clients.Group(channelId.ToString()).SendAsync("ReceivePost", newPost);
         
         // await _hub.Clients.Group(channel.Name).SendAsync("ReceivePost", message);
-        return message;
+        return post;
     }
 
     // POST: api/Channels/5/Users

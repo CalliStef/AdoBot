@@ -51,6 +51,21 @@ public class PostsController : ControllerBase
 
         return CreatedAtAction(nameof(GetPost), new { id = Post.Id }, Post);
     }
+    
+    // get post by channel id
+    [HttpGet]
+    [Route("channel/{channelId}")]
+    public async Task<ActionResult<IEnumerable<Post>>> GetPostsByChannelId(int channelId)
+    {
+        var Posts = await _context.Posts.Where(p => p.ChannelId == channelId).ToListAsync();
+
+        if (Posts == null)
+        {
+            return NotFound();
+        }
+
+        return Posts;
+    }
 
 // // POST: api/Posts/5/Posts
 //     [HttpPost("{PostId}/Posts")]

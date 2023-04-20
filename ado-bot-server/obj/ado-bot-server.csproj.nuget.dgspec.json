@@ -64,6 +64,10 @@
               "target": "Package",
               "version": "[2.0.1, )"
             },
+            "Microsoft.ML.FastTree": {
+              "target": "Package",
+              "version": "[2.0.1, )"
+            },
             "Newtonsoft.Json": {
               "target": "Package",
               "version": "[13.0.3, )"
