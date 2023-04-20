@@ -11,6 +11,8 @@ DotNetEnv.Env.Load();
 
 var builder = WebApplication.CreateBuilder(args);
 
+var port = Environment.GetEnvironmentVariable("PORT") ?? "8081";
+builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
 
 var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL");
 
@@ -63,8 +65,9 @@ app.MapGet("/api/predict", (string comment ) =>
     };
 });
 
+app.UseDefaultFiles();
+app.UseStaticFiles();
+app.MapFallbackToFile("index.html");
 
-
-app.MapGet("/", () => "Hello World!");
 
 app.Run();

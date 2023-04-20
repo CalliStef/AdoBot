@@ -18,7 +18,7 @@ export default function ChannelForm({
   handleResetCurrentEditedChannel,
 }: ChannelFormProps) {
   const [input, setInput] = useState<string | null>(
-    currentEditedChannel?.name || null
+    currentEditedChannel?.name ?? null
   );
 
   useEffect(() => {

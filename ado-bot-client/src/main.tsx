@@ -10,11 +10,6 @@ import './index.css'
 import AuthPage from './pages/AuthPage'
 
 
-const isAuthenticated = () => {
-  return sessionStorage.getItem("username") ? true : false
-}
-
-
 const router = createBrowserRouter([
   {
     path: '/',
@@ -22,7 +17,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/home',
-    element: ( isAuthenticated() ? <App /> : <Navigate to="/" replace={true}/>)
+    element: <App />
   }
 
 ]);

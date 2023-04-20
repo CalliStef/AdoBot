@@ -8,18 +8,14 @@ interface ChannelListProps {
   user: User | null;
   handleWarningMessage: (message: string | null) => void;
   handleViewChannel: (channel: Channel) => void;
-  //     handleChannelChange: (channel: Channel) => void;
-  //     handleUserJoin: (channel: Channel, user?: User) => void;
-  //     handleUserLeave: (user: User) => void;
-  //     currentChannel?: Channel;
-  //     handleChannelDelete: (channelId: number) => void;
-  //     handleChannelEdit: (channelData: Channel) => void;
+  handleUpdateUser: (user: User) => void;
 }
 
 export default function ChannelsList({
   user,
   handleWarningMessage,
   handleViewChannel,
+  handleUpdateUser,
 }: ChannelListProps) {
   const [showChannelForm, setShowChannelForm] = useState<boolean>(false);
   const [channels, setChannels] = useState<Channel[]>([]);
@@ -49,18 +45,33 @@ export default function ChannelsList({
     const isToxic = await checkToxicity(channelName);
 
     if (!isToxic) {
-      await axios.put<Channel>(
+      const updatedData = await axios.put<Channel>(
         `/api/channels/${channelData.id}`,
         updatedChannel
       );
       setChannels((prevChannels) =>
         prevChannels.map((c) => {
           if (c.id === channelData.id) {
-            return channelData;
+            return updatedData.data;
           }
           return c;
         })
       );
+
+      
+      if (user?.id === channelData.creatorId) {
+        handleUpdateUser({
+          ...user,
+          channels: user.channels.map((c) => {
+            if (c.id === channelData.id) {
+              return updatedData.data;
+            }
+            return c;
+          }),
+        });
+      }
+
+
     }
 
     setCurrentEditedChannel(null);
@@ -96,6 +107,7 @@ export default function ChannelsList({
       });
 
       setChannels([...channels, newChannel.data]);
+      
     }
 
     handleChangeShowChannelForm()
@@ -119,6 +131,10 @@ export default function ChannelsList({
     setCurrentEditedChannel(channel);
     handleChangeShowChannelForm();
   };
+
+  const checkIfUserIsInChannel = (channel: Channel) => {
+    return channel.users?.some((u) => u.id === user?.id);
+  }
 
   return (
     <div className="animate-in slide-in-from-bottom fill-mode-backwards items-center duration-1000 bg-[#cad2c5] flex w-screen flex-col rounded-tr-2xl rounded-tl-2xl h-[75vh] bottom-0">
@@ -146,7 +162,7 @@ export default function ChannelsList({
             New Community
           </button>
 
-          <div className="flex flex-col space-y-4 mt-8 items-center">
+          <div className="flex flex-col space-y-4 mt-8 items-center overflow-y-scroll">
             <h2 className="font-gloria font-bold">Your Communities</h2>
             <div className="flex overflow-x-scroll">
               {channels.map(
@@ -161,7 +177,7 @@ export default function ChannelsList({
                     >
                       <h1 className="text-[#cad2c5] font-manrope font-black">{channel.name}</h1>
                       <p className="text-[#cad2c5] font-manrope font-black">
-                        #users: {channel.users.length}
+                        #users: {channel.users?.length ?? 0}
                       </p>
                       <button
                         className="absolute bottom-0 right-0 z-10 bg-[#2f3e46] text-[#cad2c5] rounded-full p-2"
@@ -185,18 +201,44 @@ export default function ChannelsList({
                   )
               )}
             </div>
+
+            <h2 className="font-gloria font-bold">Your Joined Communities</h2>
+            <div className="flex overflow-x-scroll">
+              {channels.map(
+                (channel, index) =>
+                  channel.creatorId !== user?.id && checkIfUserIsInChannel(channel)  && (
+                    <div
+                      key={index}
+                      className="relative flex flex-col items-center justify-center w-[10rem] h-[8rem] rounded-lg bg-[#2f3e46]"
+                      onClick={() => {
+                        handleViewChannel(channel)
+                      }}
+                    >
+                      <h1 className="text-[#cad2c5] font-manrope font-black">{channel.name}</h1>
+                      <p className="text-[#cad2c5] font-manrope font-black">
+                        #users: {channel.users.length ?? 0}
+                      </p>
+                    </div>
+                  )
+              )}
+            </div>
+
+
             <h2 className="font-gloria font-bold">Global Communities</h2>
             <div className="flex overflow-y-scroll">
               {channels.map(
                 (channel, index) =>
-                  channel.creatorId !== user?.id && (
+                  channel.creatorId !== user?.id && checkIfUserIsInChannel(channel) === false && (
                     <div
                       key={index}
                       className="relative flex flex-col items-center justify-center w-[10rem] h-[8rem] rounded-lg bg-[#2f3e46]"
+                      onClick={() => {
+                        handleViewChannel(channel)
+                      }}
                     >
                       <h1 className="text-[#cad2c5] font-manrope font-black">{channel.name}</h1>
                       <p className="text-[#cad2c5] font-manrope font-black">
-                        #users: {channel.users.length}
+                        #users: {channel.users.length ?? 0}
                       </p>
                      
                     </div>

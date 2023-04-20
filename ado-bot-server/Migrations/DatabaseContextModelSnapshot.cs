@@ -81,6 +81,10 @@ namespace ado_bot_server.Migrations
                     b.Property<int>("ChannelId")
                         .HasColumnType("integer");
 
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<DateTime>("Created")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
@@ -92,7 +96,7 @@ namespace ado_bot_server.Migrations
                     b.Property<int>("Likes")
                         .HasColumnType("integer");
 
-                    b.Property<string>("Text")
+                    b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("text");
 

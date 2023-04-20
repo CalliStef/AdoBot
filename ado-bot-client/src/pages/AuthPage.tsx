@@ -22,7 +22,6 @@ export default function AuthPage() {
     username?: string;
     password?: string;
   }) => {
-    console.log("signup");
     const areInputsFilled = checkInputExists(
       inputData.username,
       inputData.password
@@ -62,7 +61,6 @@ export default function AuthPage() {
     username?: string;
     password?: string;
   }) => {
-    console.log("login");
 
     const areInputsFilled = checkInputExists(
       inputData.username,
@@ -81,6 +79,7 @@ export default function AuthPage() {
         })
         .then((res) => {
           console.log(res);
+          sessionStorage.setItem("loginSuccess", "success")
           sessionStorage.setItem("username", res.data.username);     
         })
         .then(() => {
@@ -127,15 +126,15 @@ export default function AuthPage() {
   return (
     <div className="h-screen w-screen relative overflow-hidden">
       <div className="absolute w-full h-full top-0 left-0 m-4 z-[1]">
-        <div className="absolute flex flex-col right-[10vw] h-fit w-64 left-[15vw] top-[40vw] md:top-[15vw] md:left-[55vw]">
-          {signUpMessage && (
-            <div className="bg-red-500 rounded-md text-white text-md text-center py-2 mb-4">
+        <div className="absolute flex flex-col right-[10vw] h-fit w-fit left-[15vw] top-[40vw] md:top-[25vw]">
+          {signUpMessage && !isLoading && (
+            <div className="bg-red-500 rounded-md text-white text-md text-center py-2 mb-4 w-full">
               {signUpMessage}
             </div>
           )}
 
           {isLoading ? (
-            <div className="flex justify-center items-center">
+            <div className="flex justify-center items-center w-full h-full left-0 top-0">
               <Icon
                 icon="line-md:loading-twotone-loop"
                 color="#cad2c5"
@@ -155,8 +154,7 @@ export default function AuthPage() {
         </div>
       </div>
       <Canvas className="bg-gradient-to-r from-[#2f3e46] via-[#52796f] to-[#cad2c5]">
-        {/* <Bot ref={botRef} positionX={-1.5} rotationY={0.3}/> */}
-        <Bot ref={botRef} positionZ={-3} positionY={8} rotationX={1.3}/>
+        <Bot ref={botRef} positionZ={-3} positionY={4} rotationX={0.7}/>
       </Canvas>
       {/* <h1 className=" text-green-300">SignalR Chat</h1>
       <p>{connection ? "Connected" : "Not connected"}</p> */}

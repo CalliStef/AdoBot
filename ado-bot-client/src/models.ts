@@ -1,7 +1,10 @@
 export interface Post {
     id: number;
-    text: string;
-    user: User;
+    title: string;
+    content: string;
+    likes: number;
+    dislikes: number;
+    userId: number;
     created: Date;
     channelId: number;
   };

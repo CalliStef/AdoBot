@@ -12,8 +12,8 @@ using ado_bot_server.Models;
 namespace ado_bot_server.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20230419015931_InitMigrations")]
-    partial class InitMigrations
+    [Migration("20230419201221_InitMigration")]
+    partial class InitMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -84,6 +84,10 @@ namespace ado_bot_server.Migrations
                     b.Property<int>("ChannelId")
                         .HasColumnType("integer");
 
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<DateTime>("Created")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
@@ -95,7 +99,7 @@ namespace ado_bot_server.Migrations
                     b.Property<int>("Likes")
                         .HasColumnType("integer");
 
-                    b.Property<string>("Text")
+                    b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("text");
 

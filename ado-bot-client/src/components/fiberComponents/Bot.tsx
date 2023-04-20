@@ -14,21 +14,6 @@ interface BotProps {
   rotationZ?: number;
 
 }
-// class BotGroup extends THREE.Group {
-//   constructor(props: BotProps, ref: MutableRefObject<THREE.Group | null>) {
-//     super();
-//     // Custom logic or initialization for the BotGroup class
-//   }
-
-//   animateBotToY = (y: number) => {
-//     // Custom logic to animate the bot to the specified y position
-//     // Example:
-//     // this.position.y = y; // Set the y position of the group
-//     // animate the group's position using a tween or any other animation library
-//   };
-// }
-
-
 
 const Bot = forwardRef<THREE.Group | null, BotProps>((props, ref)  => {
   const { camera, gl, size, viewport, mouse } = useThree();
@@ -48,11 +33,11 @@ const Bot = forwardRef<THREE.Group | null, BotProps>((props, ref)  => {
       botGroup.scale.set(0.8 * aspect, 0.8 * aspect, 1);
 
       botGroup.position.x = (positionX ?? 0) * aspect;
-      botGroup.position.y = (positionY ?? 0) * aspect;
+      botGroup.position.y = positionY ?? 0;
       botGroup.position.z = (positionZ ?? 0) * aspect;
 
       botGroup.rotation.y = (props.rotationY ?? 0) * aspect;
-      botGroup.rotation.x = (props.rotationX ?? 0) * aspect;
+      botGroup.rotation.x = props.rotationX ?? 0;
       botGroup.rotation.z = (props.rotationZ ?? 0) * aspect;
       
     }

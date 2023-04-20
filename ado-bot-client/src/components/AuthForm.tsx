@@ -40,7 +40,7 @@ export default function AuthForm({
   };
 
   return (
-    <div className="bg-[#2F3E46] shadow-md rounded-lg w-[65vw] md:w-[40vw] h-fit p-4 sm:p-6 lg:p-8">
+    <div className="bg-[#2F3E46] shadow-md rounded-lg w-[65vw] h-fit p-4 sm:p-6 lg:p-8">
       <form
         className="flex flex-col space-y-6 w-full h-full"
         onSubmit={onFormSubmit}

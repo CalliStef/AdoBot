@@ -2,15 +2,17 @@ namespace ado_bot_server.Models;
 
 public class Post
 {
-    public Post(int id, string text, DateTime created)
+    public Post(int id, string title, string content, DateTime created)
     {
         Id = id;
-        Text = text;
+        Title= title;
+        Content = content;
         Created = created;
     }
 
     public int Id { get; set; }
-    public string Text { get; set; }
+    public string Title { get; set; }
+    public string Content { get; set; }
     public int Likes { get; set; }
     public int Dislikes { get; set; }
     public int UserId { get; set; }
