@@ -68,3 +68,4 @@
 /Users/callisto/Desktop/BCIT/TERM_4/MVC/final-project/AdoBot/ado-bot-server/bin/Debug/net7.0/runtimes/osx-x64/native/libFastTreeNative.dylib
 /Users/callisto/Desktop/BCIT/TERM_4/MVC/final-project/AdoBot/ado-bot-server/bin/Debug/net7.0/runtimes/win-x64/native/FastTreeNative.dll
 /Users/callisto/Desktop/BCIT/TERM_4/MVC/final-project/AdoBot/ado-bot-server/bin/Debug/net7.0/runtimes/win-x86/native/FastTreeNative.dll
+/Users/callisto/Desktop/BCIT/TERM_4/MVC/final-project/AdoBot/ado-bot-server/bin/Debug/net7.0/ado-bot-server.staticwebassets.runtime.json

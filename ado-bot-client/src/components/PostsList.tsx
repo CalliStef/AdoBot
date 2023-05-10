@@ -4,6 +4,7 @@ import { Icon } from "@iconify/react";
 import axios from "axios";
 import PostForm from "./PostForm";
 interface PostsListProps {
+  connection: signalR.HubConnection | undefined;
   channel: Channel;
   handleViewChannel: (post: Channel | null) => void;
   user: User | null;
@@ -13,6 +14,7 @@ interface PostsListProps {
 }
 
 export default function PostsList({
+  connection,
   channel,
   handleViewChannel,
   user,
@@ -26,22 +28,65 @@ export default function PostsList({
   const [currentEditedPost, setCurrentEditedPost] = useState<Post | null>(null);
 
   useEffect(() => {
+    if (connection) {
+      connection.on("UserJoined", (user: User) => {
+        handleWarningMessage(`${user.username} joined the channel!`);
+      });
 
+      connection.on("UserLeft", (user: User) => {
+        handleWarningMessage(`${user.username} left the channel!`);
+      });
+
+      connection.on("PostAdded", (post: Post) => {
+        console.log("new post created")
+        setPosts((prevPosts) => [...prevPosts, post]);
+      })
+
+      connection.on("PostUpdated", (post: Post) => {
+        setPosts((prevPosts) =>
+          prevPosts.map((p) => {
+            if (p.id === post.id) {
+              return post;
+            }
+            return p;
+          })
+        );
+      });
+
+      connection.on("PostDeleted", (postId: number) => {
+        console.log("post deleted," + postId)
+        setPosts((prevPosts) =>
+          prevPosts.filter((p) => p.id !== postId)
+        );
+
+      })
+    }
+
+    return () => {
+      if (connection) {
+        connection.off("UserJoined");
+        connection.off("UserLeft");
+        connection.off("PostAdded");
+        connection.off("PostUpdated");
+        connection.off("PostDeleted")
+      }
+    };
+  }, []);
+
+  useEffect(() => {
     (async () => {
-        const res = await axios.get(`/api/posts/channel/${channel.id}`);
-        setPosts(res.data);
+      const res = await axios.get(`/api/posts/channel/${channel.id}`);
+      setPosts(res.data);
     })();
-    
   }, []);
 
   useEffect(() => {
     user?.channels.map((c) => {
-        if (c.id === channel.id) {
-          setIsUserJoined(true); // if user is in the post set the state to true
-        }
-      });
-
-  }, [isUserJoined])
+      if (c.id === channel.id) {
+        setIsUserJoined(true); // if user is in the post set the state to true
+      }
+    });
+  }, [isUserJoined]);
 
   const handleUpdatePost = async (
     postData: Post,
@@ -57,32 +102,11 @@ export default function PostsList({
     const isToxic = await checkToxicity(postTitle, postContent);
 
     if (!isToxic) {
-      const updatedData = await axios.put<Post>(
+      axios.put<Post>(
         `/api/posts/${postData?.id}`,
         updatedPost
       );
 
-      setPosts((prevPosts) =>
-        prevPosts.map((c) => {
-          if (c.id === postData.id) {
-            return updatedData.data;
-          }
-          return c;
-        })
-      );
-
-      // update the post in the channel
-      const updatedChannel = {
-        ...channel,
-        posts: channel.posts.map((p) => {
-          if (p.id === postData.id) {
-            return updatedData.data;
-          }
-          return p;
-        }),
-      };
-
-      handleUpdateCurrentChannel(updatedChannel);
     }
 
     setCurrentEditedPost(null);
@@ -123,21 +147,12 @@ export default function PostsList({
     const isToxic = await checkToxicity(postTitle, postContent);
 
     if (!isToxic) {
-      const newpost = await axios.post(`/api/Channels/${channel.id}/Posts`, {
+      axios.post(`/api/Channels/${channel.id}/Posts`, {
         userId: user?.id,
         title: postTitle,
         content: postContent,
       });
 
-      setPosts([...posts, newpost.data]);
-
-      // update the post in the channel
-      const updatedChannel = {
-        ...channel,
-        posts: [...channel.posts, newpost.data],
-      };
-
-      handleUpdateCurrentChannel(updatedChannel);
     }
 
     handleChangeShowPostForm();
@@ -153,7 +168,6 @@ export default function PostsList({
 
   const handleDeletePost = async (postId: number) => {
     await axios.delete(`/api/posts/${postId}`);
-    setPosts(posts.filter((post) => post.id !== postId));
   };
 
   const handleEditPost = async (post: Post) => {
@@ -162,27 +176,36 @@ export default function PostsList({
   };
 
   const handleJoinChannel = async () => {
-    const userJoined = await axios.post("/api/users/join", {
-      userId: user?.id,
-      channelId: channel.id,
-    });
+    try {
+      connection?.invoke("AddToGroup", channel.id);
 
+      const userJoined = await axios.post("/api/users/join", {
+        userId: user?.id,
+        channelId: channel.id,
+      });
 
-    handleUpdateUser(userJoined.data);
-
-    setIsUserJoined(true);
+      handleUpdateUser(userJoined.data);
+      setIsUserJoined(true);
+    } catch {
+      handleWarningMessage("Something went wrong with joining the channel.");
+    }
   };
 
   const handleLeaveChannel = async () => {
-    const userLeft = await axios.post("/api/users/leave", {
-      userId: user?.id,
-      channelId: channel.id,
-    });
+    try {
+      connection?.invoke("RemoveFromGroup", channel.id);
 
+      const userLeft = await axios.post("/api/users/leave", {
+        userId: user?.id,
+        channelId: channel.id,
+      });
 
-    handleUpdateUser(userLeft.data);
+      handleUpdateUser(userLeft.data);
 
-    setIsUserJoined(false);
+      setIsUserJoined(false);
+    } catch {
+      handleWarningMessage("Something went wrong with leaving the channel.");
+    }
   };
 
   return (
@@ -250,9 +273,12 @@ export default function PostsList({
               )}
             </div>
 
-            <div className="flex flex-col gap-4 w-full h-[20rem] items-center overflow-y-scroll my-4">
+            <div className="flex flex-col gap-4 w-full h-[19rem] items-center overflow-y-scroll my-4">
               {posts.map((post, index) => (
-                <div key={index} className="bg-[#2f3e46] flex flex-col w-[80vw] h-[40vw] p-4 rounded-md">
+                <div
+                  key={index}
+                  className="bg-[#2f3e46] flex flex-col w-[80vw] p-4 rounded-md flex-shrink-0"
+                >
                   <h2 className="font-manrope text-[#cad2c5]">
                     Title: {post.title}
                   </h2>

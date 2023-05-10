@@ -1,3 +1,6 @@
+using System.ComponentModel;
+using System.Diagnostics.Tracing;
+using System.Security.Authentication.ExtendedProtection;
 using ado_bot_server.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -132,16 +135,32 @@ public class UsersController : ControllerBase
     [Route("leave")]
     public async Task<ActionResult<User>> LeaveChannel(JoinChannelRequestDTO requestDto)
     {
-        var user = await _context.Users.FindAsync(requestDto.UserId);
-        var channel = await _context.Channels.FindAsync(requestDto.ChannelId);
+        var user = await _context.Users.Include(u => u.Channels).FirstOrDefaultAsync(u => u.Id == requestDto.UserId);
+        var channel = await _context.Channels.Include(c => c.Users).FirstOrDefaultAsync(c => c.Id == requestDto.ChannelId);
 
         if (user == null || channel == null)
         {
             return NotFound();
         }
-
-        user.Channels.Remove(channel);
-        channel.Users.Remove(user);
+        
+        
+        foreach (var userChannel in user.Channels)
+        {
+            if(userChannel.Id == channel.Id)
+            {
+                user.Channels.Remove(userChannel);
+                break;
+            }
+        }
+        
+        foreach (var channelUser in channel.Users)
+        {
+            if(channelUser.Id == user.Id)
+            {
+                channel.Users.Remove(channelUser);
+                break;
+            }
+        }
 
         await _context.SaveChangesAsync();
 

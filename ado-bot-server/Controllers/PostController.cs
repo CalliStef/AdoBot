@@ -48,6 +48,8 @@ public class PostsController : ControllerBase
     {
         _context.Posts.Add(Post);
         await _context.SaveChangesAsync();
+        
+        await _hub.Clients.All.SendAsync("PostAdded", Post);
 
         return CreatedAtAction(nameof(GetPost), new { id = Post.Id }, Post);
     }
@@ -57,14 +59,9 @@ public class PostsController : ControllerBase
     [Route("channel/{channelId}")]
     public async Task<ActionResult<IEnumerable<Post>>> GetPostsByChannelId(int channelId)
     {
-        var Posts = await _context.Posts.Where(p => p.ChannelId == channelId).ToListAsync();
+        var posts = await _context.Posts.Where(p => p.ChannelId == channelId).ToListAsync();
 
-        if (Posts == null)
-        {
-            return NotFound();
-        }
-
-        return Posts;
+        return posts;
     }
 
 // // POST: api/Posts/5/Posts
@@ -94,7 +91,7 @@ public class PostsController : ControllerBase
         _context.Entry(Post).State = EntityState.Modified;
         await _context.SaveChangesAsync();
 
-        await _hub.Clients.Group(Post.ChannelId.ToString()).SendAsync("PostUpdated", Post);
+        await _hub.Clients.All.SendAsync("PostUpdated", Post);
 
         return NoContent();
     }
@@ -111,7 +108,7 @@ public class PostsController : ControllerBase
         _context.Posts.Remove(Post);
         await _context.SaveChangesAsync();
 
-        await _hub.Clients.Group(Post.ChannelId.ToString()).SendAsync("PostDeleted", Post.Id);
+        await _hub.Clients.All.SendAsync("PostDeleted", Post.Id);
 
         return NoContent();
     }

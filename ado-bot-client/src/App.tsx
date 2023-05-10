@@ -8,9 +8,10 @@ import axios from "axios";
 import { Icon } from "@iconify/react";
 import PostsList from "./components/PostsList";
 import { useNavigate } from "react-router-dom";
+import useSignalR from "./useSignalR";
 
 export default function App() {
-  // const { connection } = useSignalR("/r/chat");
+  const { connection } = useSignalR("/r/chat");
   const botRef = useRef<Group | null>(null);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -18,6 +19,7 @@ export default function App() {
   const [currentChannel, setCurrentChannel] = useState<Channel | null>(null);
   const navigate = useNavigate();
   const warningRef = useRef<HTMLDivElement | null>(null);
+
 
   useEffect(() => {
     const username = sessionStorage.getItem("username");
@@ -76,6 +78,11 @@ export default function App() {
   const handleLogout = () => {
     sessionStorage.removeItem("username");
     sessionStorage.removeItem("loginSuccess");
+
+    if(connection){
+      connection.stop();
+    }
+
     navigate("/");
   };
 
@@ -109,6 +116,7 @@ export default function App() {
           </div>
         ) : currentChannel ? (
           <PostsList
+            connection={connection}  
             channel={currentChannel}
             handleViewChannel={handleViewChannel}
             user={currentUser}
@@ -118,6 +126,7 @@ export default function App() {
           />
         ) : (
           <ChannelsList
+          connection={connection}
             user={currentUser}
             handleWarningMessage={handleWarningMessage}
             handleViewChannel={handleViewChannel}
