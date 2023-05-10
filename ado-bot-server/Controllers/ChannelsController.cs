@@ -78,7 +78,7 @@ public class ChannelsController : ControllerBase
         _context.Channels.Add(Channel);
         await _context.SaveChangesAsync();
 
-        await _hub.Clients.All.SendAsync("ReceiveChannel", Channel);
+        await _hub.Clients.All.SendAsync("ChannelCreated", Channel);
 
         return CreatedAtAction(nameof(GetChannel), new { id = Channel.Id }, Channel);
     }
@@ -99,7 +99,8 @@ public class ChannelsController : ControllerBase
         // return CreatedAtAction("GetPost", "Post", new { id = Channel.Id }, Channel);
         // Broadcast this to all SignalR clients
         // await _hub.Clients.All.SendAsync("ReceivePost", Post);
-        await _hub.Clients.Group(channelId.ToString()).SendAsync("ReceivePost", newPost);
+        await _hub.Clients.All.SendAsync("PostAdded", newPost);
+
         
         // await _hub.Clients.Group(channel.Name).SendAsync("ReceivePost", message);
         return post;

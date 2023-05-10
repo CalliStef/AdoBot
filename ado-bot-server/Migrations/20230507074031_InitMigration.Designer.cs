@@ -12,7 +12,7 @@ using ado_bot_server.Models;
 namespace ado_bot_server.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20230419201221_InitMigration")]
+    [Migration("20230507074031_InitMigration")]
     partial class InitMigration
     {
         /// <inheritdoc />

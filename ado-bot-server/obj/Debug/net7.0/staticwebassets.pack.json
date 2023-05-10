@@ -1,0 +1,37 @@
+{
+  "Files": [
+    {
+      "Id": "/Users/callisto/Desktop/BCIT/TERM_4/MVC/final-project/AdoBot/ado-bot-server/wwwroot/assets/index-1ef89bca.js",
+      "PackagePath": "staticwebassets/assets/index-1ef89bca.js"
+    },
+    {
+      "Id": "/Users/callisto/Desktop/BCIT/TERM_4/MVC/final-project/AdoBot/ado-bot-server/wwwroot/assets/index-56fb1c78.css",
+      "PackagePath": "staticwebassets/assets/index-56fb1c78.css"
+    },
+    {
+      "Id": "/Users/callisto/Desktop/BCIT/TERM_4/MVC/final-project/AdoBot/ado-bot-server/wwwroot/index.html",
+      "PackagePath": "staticwebassets/index.html"
+    },
+    {
+      "Id": "/Users/callisto/Desktop/BCIT/TERM_4/MVC/final-project/AdoBot/ado-bot-server/wwwroot/vite.svg",
+      "PackagePath": "staticwebassets/vite.svg"
+    },
+    {
+      "Id": "obj/Debug/net7.0/staticwebassets/msbuild.ado-bot-server.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj/Debug/net7.0/staticwebassets/msbuild.build.ado-bot-server.props",
+      "PackagePath": "build\\ado-bot-server.props"
+    },
+    {
+      "Id": "obj/Debug/net7.0/staticwebassets/msbuild.buildMultiTargeting.ado-bot-server.props",
+      "PackagePath": "buildMultiTargeting\\ado-bot-server.props"
+    },
+    {
+      "Id": "obj/Debug/net7.0/staticwebassets/msbuild.buildTransitive.ado-bot-server.props",
+      "PackagePath": "buildTransitive\\ado-bot-server.props"
+    }
+  ],
+  "ElementsToRemove": []
+}
