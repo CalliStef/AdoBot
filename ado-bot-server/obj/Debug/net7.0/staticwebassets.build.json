@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "f/Sl59rCQieZzbNDQ3H3JJg0uzta3JUXLZN4KMwSJCE=",
+  "Hash": "nuUUiCHALPo4beuNEcEjKNkwQQbk55efYXL9/Da0rgM=",
   "Source": "ado-bot-server",
   "BasePath": "_content/ado-bot-server",
   "Mode": "Default",
@@ -17,12 +17,12 @@
   ],
   "Assets": [
     {
-      "Identity": "/Users/callisto/Desktop/BCIT/TERM_4/MVC/final-project/AdoBot/ado-bot-server/wwwroot/assets/index-1ef89bca.js",
+      "Identity": "/Users/callisto/Desktop/BCIT/TERM_4/MVC/final-project/AdoBot/ado-bot-server/wwwroot/assets/index-2647aa99.css",
       "SourceId": "ado-bot-server",
       "SourceType": "Discovered",
       "ContentRoot": "/Users/callisto/Desktop/BCIT/TERM_4/MVC/final-project/AdoBot/ado-bot-server/wwwroot/",
       "BasePath": "_content/ado-bot-server",
-      "RelativePath": "assets/index-1ef89bca.js",
+      "RelativePath": "assets/index-2647aa99.css",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -31,15 +31,15 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot/assets/index-1ef89bca.js"
+      "OriginalItemSpec": "wwwroot/assets/index-2647aa99.css"
     },
     {
-      "Identity": "/Users/callisto/Desktop/BCIT/TERM_4/MVC/final-project/AdoBot/ado-bot-server/wwwroot/assets/index-56fb1c78.css",
+      "Identity": "/Users/callisto/Desktop/BCIT/TERM_4/MVC/final-project/AdoBot/ado-bot-server/wwwroot/assets/index-c418aa96.js",
       "SourceId": "ado-bot-server",
       "SourceType": "Discovered",
       "ContentRoot": "/Users/callisto/Desktop/BCIT/TERM_4/MVC/final-project/AdoBot/ado-bot-server/wwwroot/",
       "BasePath": "_content/ado-bot-server",
-      "RelativePath": "assets/index-56fb1c78.css",
+      "RelativePath": "assets/index-c418aa96.js",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -48,7 +48,7 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot/assets/index-56fb1c78.css"
+      "OriginalItemSpec": "wwwroot/assets/index-c418aa96.js"
     },
     {
       "Identity": "/Users/callisto/Desktop/BCIT/TERM_4/MVC/final-project/AdoBot/ado-bot-server/wwwroot/index.html",

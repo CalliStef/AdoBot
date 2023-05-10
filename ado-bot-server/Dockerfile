@@ -3,6 +3,8 @@ WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
+COPY ./ToxicModel.mlnet ./ToxicModel.mlnet
+
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 COPY ["ado-bot-server.csproj", "./"]

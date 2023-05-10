@@ -80,6 +80,18 @@ using System.Collections.Generic;
 
         private static PredictionEngine<ModelInput, ModelOutput> CreatePredictEngine()
         {
+            // read the current folder and console log all of the files and folders in it
+            var currentFolder = Directory.GetCurrentDirectory();
+            var files = Directory.GetFiles(currentFolder);
+            var folders = Directory.GetDirectories(currentFolder);
+            foreach (var file in files)
+            {
+                Console.WriteLine(file);
+            }
+            foreach (var folder in folders)
+            {
+                Console.WriteLine(folder);
+            }
             var mlContext = new MLContext();
             ITransformer mlModel = mlContext.Model.Load(MLNetModelPath, out var _);
             return mlContext.Model.CreatePredictionEngine<ModelInput, ModelOutput>(mlModel);
